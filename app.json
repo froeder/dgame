@@ -1,0 +1,12 @@
+{
+  "name": "thegame",
+  "displayName": "thegame",
+  "expo": {
+    "name": "thegame",
+    "slug": "thegame",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
