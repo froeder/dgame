@@ -1,19 +1,19 @@
 {
     "dev": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-dgame-dev-223707-authRole",
-            "UnauthRoleArn": "arn:aws:iam::386773272671:role/amplify-dgame-dev-223707-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::386773272671:role/amplify-dgame-dev-223707-authRole",
+            "AuthRoleName": "amplify-dgame-dev-231139-authRole",
+            "UnauthRoleArn": "arn:aws:iam::386773272671:role/amplify-dgame-dev-231139-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::386773272671:role/amplify-dgame-dev-231139-authRole",
             "Region": "us-west-2",
-            "DeploymentBucketName": "amplify-dgame-dev-223707-deployment",
-            "UnauthRoleName": "amplify-dgame-dev-223707-unauthRole",
-            "StackName": "amplify-dgame-dev-223707",
-            "StackId": "arn:aws:cloudformation:us-west-2:386773272671:stack/amplify-dgame-dev-223707/4c606730-c70d-11ea-82bd-0a5d164d0af8",
-            "AmplifyAppId": "d8wpp3je7cd9b"
+            "DeploymentBucketName": "amplify-dgame-dev-231139-deployment",
+            "UnauthRoleName": "amplify-dgame-dev-231139-unauthRole",
+            "StackName": "amplify-dgame-dev-231139",
+            "StackId": "arn:aws:cloudformation:us-west-2:386773272671:stack/amplify-dgame-dev-231139/13ac7730-c712-11ea-bdcc-0a52752701a6",
+            "AmplifyAppId": "dg64t0plnobi3"
         },
         "categories": {
             "auth": {
-                "dgame3935eddd": {}
+                "dgame": {}
             }
         }
     }

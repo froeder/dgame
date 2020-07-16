@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "dgame3935eddd_identitypool_3935eddd",
+    "identityPoolName": "userpool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "dgame3935eddd",
-    "userPoolName": "dgame3935eddd_userpool_3935eddd",
+    "resourceNameTruncated": "dgame634cac20",
+    "userPoolName": "gameuserpool",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -12,13 +12,15 @@
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
-    "emailVerificationSubject": "Your verification code",
-    "emailVerificationMessage": "Your verification code is {####}",
+    "emailVerificationSubject": "Seu código de verificação",
+    "emailVerificationMessage": "Seu código é {####}",
     "defaultPasswordPolicy": false,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email"
+        "email",
+        "locale",
+        "name"
     ],
     "userpoolClientGenerateSecret": true,
     "userpoolClientRefreshTokenValidity": 30,
@@ -28,11 +30,22 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "dgame33935eddd_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "dgame634cac20_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "3935eddd",
-    "resourceName": "dgame3935eddd",
+    "useDefault": "manual",
     "authSelections": "identityPoolAndUserPool",
+    "resourceName": "dgame",
+    "thirdPartyAuth": false,
+    "usernameAttributes": [
+        "email"
+    ],
+    "userPoolGroups": true,
+    "adminQueries": true,
+    "triggers": "{}",
+    "hostedUI": false,
+    "userPoolGroupList": [
+        "email"
+    ],
     "authRoleArn": {
         "Fn::GetAtt": [
             "AuthRole",
@@ -45,10 +58,9 @@
             "Arn"
         ]
     },
-    "useDefault": "default",
-    "usernameAttributes": [
-        "email"
-    ],
-    "userPoolGroupList": [],
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
     "dependsOn": []
 }
