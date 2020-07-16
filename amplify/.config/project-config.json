@@ -1,0 +1,17 @@
+{
+    "projectName": "dgame",
+    "version": "3.0",
+    "frontend": "javascript",
+    "javascript": {
+        "framework": "react-native",
+        "config": {
+            "SourceDir": "/",
+            "DistributionDir": "/",
+            "BuildCommand": "expo build",
+            "StartCommand": "expo start"
+        }
+    },
+    "providers": [
+        "awscloudformation"
+    ]
+}
