@@ -8,13 +8,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import { withAuthenticator } from "aws-amplify-react-native";
-
-import Amplify from "@aws-amplify/core";
-import config from "./aws-exports";
-Amplify.configure(config);
-import { Auth } from "aws-amplify";
-
 import Home from "./pages/home";
 import Profile from "./pages/profile";
 import About from "./pages/about";
@@ -169,14 +162,9 @@ function App() {
           options={{ drawerLabel: "Sobre" }}
           component={aboutScreenStack}
         />
-        <Drawer.Screen
-          name="Sair"
-          options={{ drawerLabel: "Sair" }}
-          component={signOut}
-        />
       </Drawer.Navigator>
     </NavigationContainer>
   );
 }
 
-export default withAuthenticator(App);
+export default App;
