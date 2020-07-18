@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text, View, FlatList } from "react-native";
 import { styles } from "./styles";
 import { List, Button } from "react-native-paper";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default class home extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -12,6 +13,7 @@ export default class home extends React.Component<Props, State> {
   componentDidMount() {
     console.log("Perdi");
     this.refresh();
+    AsyncStorage.getItem("@user").then((response) => console.log(response));
   }
 
   onPress = async () => {

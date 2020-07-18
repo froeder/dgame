@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
 
-import * as React from "react";
+import React, { useState } from "react";
 import { Button, View, Text, TouchableOpacity, Image } from "react-native";
 import { Avatar } from "react-native-paper";
 
@@ -12,6 +12,8 @@ import Home from "./pages/home";
 import Profile from "./pages/profile";
 import About from "./pages/about";
 import Login from "./pages/login";
+
+import AsyncStorage from "@react-native-community/async-storage";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -26,7 +28,6 @@ const NavigationDrawerStructure = (props) => {
   return (
     <View style={{ flexDirection: "row" }}>
       <TouchableOpacity onPress={() => toggleDrawer()}>
-        {/*Donute Button Image */}
         <Image
           source={{
             uri:
@@ -139,32 +140,45 @@ function aboutScreenStack({ navigation }) {
 }
 
 function App() {
-  return (
-    <NavigationContainer>
-      <Drawer.Navigator
-        drawerContentOptions={{
-          activeTintColor: "#2D8B92",
-          itemStyle: { marginVertical: 5 },
-        }}
-      >
-        <Drawer.Screen
-          name="Home"
-          options={{ drawerLabel: "Home" }}
-          component={homeScreenStack}
-        />
-        <Drawer.Screen
-          name="Profile"
-          options={{ drawerLabel: "Perfil" }}
-          component={profileScreenStack}
-        />
-        <Drawer.Screen
-          name="About"
-          options={{ drawerLabel: "Sobre" }}
-          component={aboutScreenStack}
-        />
-      </Drawer.Navigator>
-    </NavigationContainer>
-  );
+  const [hasUser, setHasUser] = useState(false);
+
+  AsyncStorage.getItem("@user").then((response) => {
+    response ? setHasUser(true) : setHasUser(false);
+  });
+
+  console.log("HasUser");
+  console.log(hasUser);
+
+  if (hasUser) {
+    return (
+      <NavigationContainer>
+        <Drawer.Navigator
+          drawerContentOptions={{
+            activeTintColor: "#2D8B92",
+            itemStyle: { marginVertical: 5 },
+          }}
+        >
+          <Drawer.Screen
+            name="Home"
+            options={{ drawerLabel: "Home" }}
+            component={homeScreenStack}
+          />
+          <Drawer.Screen
+            name="Profile"
+            options={{ drawerLabel: "Perfil" }}
+            component={profileScreenStack}
+          />
+          <Drawer.Screen
+            name="About"
+            options={{ drawerLabel: "Sobre" }}
+            component={aboutScreenStack}
+          />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    );
+  } else {
+    return <Login setHasUser={setHasUser} />;
+  }
 }
 
 export default App;
