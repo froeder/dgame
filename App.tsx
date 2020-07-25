@@ -1,7 +1,14 @@
 import "react-native-gesture-handler";
 
 import React, { useState } from "react";
-import { Button, View, Text, TouchableOpacity, Image } from "react-native";
+import {
+  Button,
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  AsyncStorage,
+} from "react-native";
 import { Avatar } from "react-native-paper";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,8 +19,6 @@ import Home from "./pages/home";
 import Profile from "./pages/profile";
 import About from "./pages/about";
 import Login from "./pages/login";
-
-import AsyncStorage from "@react-native-community/async-storage";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();

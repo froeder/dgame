@@ -1,19 +1,23 @@
 import React, { Component } from "react";
-import { Text, View } from "react-native";
+import { Text, View, AsyncStorage } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { styles } from "./styles";
-import AsyncStorage from "@react-native-community/async-storage";
+import { v4 as uuidv4 } from "uuid";
 
 export class login extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { text: "", location: "" };
+    this.state = { name: "", location: "", id: "" };
   }
 
-  setName = async (name: string) => {
+  setName = async () => {
     await AsyncStorage.setItem(
       "@user",
-      JSON.stringify({ name: this.state.text, location: this.state.location })
+      JSON.stringify({
+        name: this.state.name,
+        location: this.state.location,
+        id: uuidv4(),
+      })
     );
     this.props.setHasUser(true);
   };
@@ -24,8 +28,8 @@ export class login extends Component<Props, State> {
         <View style={{ flex: 1, height: "100%", justifyContent: "center" }}>
           <TextInput
             label="Nome"
-            value={this.state.text}
-            onChangeText={(text) => this.setState({ text: text })}
+            value={this.state.name}
+            onChangeText={(text) => this.setState({ name: text })}
           />
           <TextInput
             style={{ marginTop: 20 }}
@@ -52,8 +56,9 @@ type Props = {
 };
 
 type State = {
-  text: string;
+  name: string;
   location: string;
+  id: string;
 };
 
 export default login;
