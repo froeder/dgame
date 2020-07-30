@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Text, View, FlatList, AsyncStorage } from "react-native";
+import {
+  Text,
+  View,
+  FlatList,
+  AsyncStorage,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import { styles } from "./styles";
 import { List, Button } from "react-native-paper";
 import * as firebase from "firebase";
@@ -12,11 +19,11 @@ import moment from "moment";
 export default class home extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { id: "" };
+    this.state = { id: "", refreshing: false };
   }
 
   async componentDidMount() {
-    this.refresh();
+    this.onRefresh();
     AsyncStorage.getItem("@user").then((response) => {
       if (response) {
         let res = JSON.parse(response);
@@ -32,34 +39,91 @@ export default class home extends React.Component<Props, State> {
 
   setHighScore = (highscore: any): void => {
     const db = firebase.firestore();
-    db.collection("highscore").doc(uuid.v1()).set(highscore);
+    db.collection("highscore")
+      .doc(this.state.nome + this.state.id)
+      .set(highscore);
   };
 
   onPress = async () => {
-    const date = moment.now();
+    moment.locale("pt-br");
+    const date = moment().format();
     this.setHighScore({
       id: this.state.id,
       nome: this.state.nome,
-      criado_em: date.toLocaleString(),
+      criado_em: date,
       cidade: this.state.cidade,
     });
     try {
-      this.refresh();
+      this.onRefresh();
     } catch (err) {
       console.log("error creating todo:", err);
     }
   };
 
-  refresh = async () => {
+  onRefresh = async () => {
+    this.setState({ refreshing: true });
     const db = firebase.firestore();
-    let snapshot = db.collection("highscore").get();
+    let snapshot = db.collection("highscore").orderBy("criado_em", "asc").get();
     let dados = (await snapshot).docs.map((doc) => doc.data());
-    console.log(dados);
+    this.setState({ scores: dados, refreshing: false });
+  };
+
+  renderItem = (item) => {
+    moment.locale("pt-br");
+    let dateFrowNow = moment(item.item.criado_em).fromNow();
+    if (item.index <= 2) {
+      return (
+        <List.Item
+          title={item.item.nome}
+          description={() => (
+            <View>
+              <Text>{dateFrowNow}</Text>
+              <Text>{item.item.cidade}</Text>
+            </View>
+          )}
+          left={() => (
+            <List.Icon
+              style={{ borderRadius: 25, backgroundColor: "#FFD700" }}
+              icon="trophy"
+              color="white"
+            />
+          )}
+        />
+      );
+    } else {
+      return (
+        <List.Item
+          title={item.item.nome}
+          description={() => (
+            <View>
+              <Text>{dateFrowNow}</Text>
+              <Text>{item.item.cidade}</Text>
+            </View>
+          )}
+          left={() => (
+            <List.Icon
+              style={{ borderRadius: 25, backgroundColor: "gray" }}
+              icon="help"
+              color="white"
+            />
+          )}
+        />
+      );
+    }
   };
 
   render() {
+    moment.locale("pt-BR");
     return (
-      <View style={styles.mainContainer}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
+          />
+        }
+        style={styles.mainContainer}
+      >
         <View style={{ marginBottom: 20 }}>
           <Button mode="contained" color="green" onPress={this.onPress}>
             <Text>Perdi</Text>
@@ -67,35 +131,21 @@ export default class home extends React.Component<Props, State> {
         </View>
         <View style={styles.card}>
           <FlatList
-            data={this.state.rank || []}
+            data={this.state.scores || []}
             keyExtractor={(item: Item) => parseInt(item.id)}
-            renderItem={(item) => (
-              <List.Item
-                title={item.item.name}
-                description={() => (
-                  <View>
-                    <Text>{item.item.name}</Text>
-                  </View>
-                )}
-                left={(props) => (
-                  <List.Icon
-                    style={styles.circle}
-                    icon="trophy"
-                    color="white"
-                  />
-                )}
-              />
-            )}
+            renderItem={(item) => this.renderItem(item)}
           />
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
 
 export type Item = {
-  id: number;
-  name: string;
+  id: string;
+  nome: string;
+  criado_em: string;
+  cidade: string;
 };
 
 export type HighScore = {
@@ -111,6 +161,7 @@ export type State = {
   id?: string;
   cidade?: string;
   nome?: string;
+  refreshing: boolean;
   document?: string;
   highscore?: {
     id: string;
@@ -118,5 +169,5 @@ export type State = {
     criado_em: string;
     cidade: string;
   };
-  scores?: [];
+  scores?: any;
 };

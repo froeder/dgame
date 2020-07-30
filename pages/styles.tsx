@@ -13,10 +13,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
   },
-  circle: {
-    borderRadius: 25,
-    backgroundColor: "green",
-  },
+  circle: {},
 });
 
 module.exports = {
