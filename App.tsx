@@ -20,6 +20,21 @@ import Profile from "./pages/profile";
 import About from "./pages/about";
 import Login from "./pages/login";
 
+import * as firebase from "firebase";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyC28GF4RBlBhs3N3Wh_DxEGrabUIYrNX20",
+  authDomain: "dgamebr-7d2c6.firebaseapp.com",
+  databaseURL: "https://dgamebr-7d2c6.firebaseio.com",
+  projectId: "dgamebr-7d2c6",
+  storageBucket: "dgamebr-7d2c6.appspot.com",
+  messagingSenderId: "620129159802",
+  appId: "1:620129159802:web:36b45db3ff431b356e09c3",
+  measurementId: "G-QRP68E4W2W",
+};
+
+firebase.initializeApp(firebaseConfig);
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 

@@ -4,22 +4,10 @@ import { styles } from "./styles";
 import { List, Button } from "react-native-paper";
 import * as firebase from "firebase";
 import "firebase/firestore";
-import { v4 as uuidv4 } from "uuid";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyC28GF4RBlBhs3N3Wh_DxEGrabUIYrNX20",
-  authDomain: "dgamebr-7d2c6.firebaseapp.com",
-  databaseURL: "https://dgamebr-7d2c6.firebaseio.com",
-  projectId: "dgamebr-7d2c6",
-  storageBucket: "dgamebr-7d2c6.appspot.com",
-  messagingSenderId: "620129159802",
-  appId: "1:620129159802:web:36b45db3ff431b356e09c3",
-  measurementId: "G-QRP68E4W2W",
-};
+import uuid from "react-native-uuid";
 
-if (!firebase.app) {
-  firebase.initializeApp(firebaseConfig);
-}
+import moment from "moment";
 
 export default class home extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -27,27 +15,28 @@ export default class home extends React.Component<Props, State> {
     this.state = { id: "" };
   }
 
-  componentDidMount() {
-    console.log("Perdi");
+  async componentDidMount() {
     this.refresh();
     AsyncStorage.getItem("@user").then((response) => {
-      console.log(response.id || "asd");
-      this.setState({
-        id: response.id || "asd",
-        nome: response.name,
-        cidade: response.location,
-      });
+      if (response) {
+        let res = JSON.parse(response);
+
+        this.setState({
+          id: res.id || 1,
+          nome: res.name,
+          cidade: res.location,
+        });
+      }
     });
   }
 
   setHighScore = (highscore: any): void => {
     const db = firebase.firestore();
-    db.collection("highscore").doc("adsds").set(highscore);
+    db.collection("highscore").doc(uuid.v1()).set(highscore);
   };
 
   onPress = async () => {
-    const date = new Date();
-
+    const date = moment.now();
     this.setHighScore({
       id: this.state.id,
       nome: this.state.nome,
@@ -61,7 +50,12 @@ export default class home extends React.Component<Props, State> {
     }
   };
 
-  refresh = async () => {};
+  refresh = async () => {
+    const db = firebase.firestore();
+    let snapshot = db.collection("highscore").get();
+    let dados = (await snapshot).docs.map((doc) => doc.data());
+    console.log(dados);
+  };
 
   render() {
     return (
@@ -117,11 +111,12 @@ export type State = {
   id?: string;
   cidade?: string;
   nome?: string;
+  document?: string;
   highscore?: {
     id: string;
     nome: string;
     criado_em: string;
     cidade: string;
   };
-  scores?: Array<highscore>;
+  scores?: [];
 };

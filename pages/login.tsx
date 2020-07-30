@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Text, View, AsyncStorage } from "react-native";
 import { TextInput, Button } from "react-native-paper";
 import { styles } from "./styles";
-import { v4 as uuidv4 } from "uuid";
+import * as Random from "expo-random";
+import uuid from "react-native-uuid";
 
 export class login extends Component<Props, State> {
   constructor(props: Props) {
@@ -11,12 +12,13 @@ export class login extends Component<Props, State> {
   }
 
   setName = async () => {
+    const randomBytes = await Random.getRandomBytesAsync(16);
     await AsyncStorage.setItem(
       "@user",
       JSON.stringify({
         name: this.state.name,
         location: this.state.location,
-        id: uuidv4(),
+        id: uuid.v1(),
       })
     );
     this.props.setHasUser(true);
